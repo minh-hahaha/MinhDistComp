@@ -11,6 +11,6 @@ rank = MPI.COMM_WORLD.Get_rank()
 
 name = MPI.Get_processor_name()
 
-print("Hello, World! I am process %2d of %2d an %s" % (rank,size,name))
+print("Hello, World! I am process %2d of %2d on %s" % (rank,size,name))
 
 
