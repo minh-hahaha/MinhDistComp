@@ -14,7 +14,7 @@ name = MPI.Get_processor_name()
 root = 0
 
 # let's create an array on each rank/process 
-outgoing_data = np.array([rank]*100, dtype=float)
+outgoing_data = np.array([rank]*10, dtype=float)
 
 if rank == root:
     comm.send(outgoing_data,dest =(rank+1)%size)
@@ -26,7 +26,6 @@ if rank > root:
 if rank == root:
     data = comm.recv(source=size-1)
 
-print("I am rank" ,str(rank))
-print("my data is :")
-print(data)
+print(name, ": I am rank" ,str(rank), "my data is : ", data)
+
 
