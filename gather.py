@@ -38,6 +38,7 @@ print(name, ": I am rank" ,str(rank), "my data is : ", data)
 # ask the root to gather all of the data rows
 recvbuff = comm.gather(data,root)
 
-if rank == root: 
+if rank == root:
+    recvbuff = np.stack(recvbuff)
     print("I am root and I have this data: ", recvbuff)
 
