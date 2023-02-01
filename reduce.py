@@ -14,10 +14,20 @@ name = MPI.Get_processor_name()
 root = 0
 
 data = np.array([rank*1,rank*2,rank*3,rank*4])
-    
-print(data) 
 
-recvbuff = comm.reduce(data, root = 0, op=MPI.SUM)
+#maxbuff = np.array([])
 
 if rank == root:
-    print(recvbuff)
+     maxbuff = np.array([])
+else:
+    maxbuff = None
+   
+print(data) 
+
+# sumbuff = comm.reduce(data, root = 0, op=MPI.SUM)
+maxbuff = comm.Reduce(data, maxbuff, op= MPI.MAX, root =root)
+
+if rank == root:
+    #print("\n\nSum Array:")
+    #print(sumbuff)
+    print("\nMax Array:", maxbuff)
