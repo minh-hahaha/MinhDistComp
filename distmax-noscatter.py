@@ -16,20 +16,26 @@ name = MPI.Get_processor_name()
 root = 0
 
 # build our list
-scale = 10**3
+scale = 10**6
 threads = 24
-# nElements = scale * threads
+nElements = scale
 
 data = []
 sendbuff = []
 recvbuff = []
 
-if rank == root:
-    nElements = scale * threads
-    for i in range(nElements):
-        data.append(random.random())
-    sendbuff = np.array(data, dtype = float)
-    sendbuff = sendbuff.reshape((threads, scale))
+
+
+for i in range(nElements):
+     data.append(random.random())
+
+
+#if rank == root:
+ #   nElements = scale * threads
+  #  for i in range(nElements):
+   #     data.append(random.random())
+    #sendbuff = np.array(data, dtype = float)
+#   sendbuff = sendbuff.reshape((threads, scale))
 #    print(sendbuff)
 
 # look for the max in the list
@@ -56,7 +62,7 @@ if rank == root:
 
 # this will run on every rank
 
-data = comm.scatter(sendbuff,root)
+# data = comm.scatter(sendbuff,root)
 
 #print(name, ": I am rank" ,str(rank), "my data is : ", data)
 
