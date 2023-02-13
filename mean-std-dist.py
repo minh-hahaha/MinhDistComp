@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-
+This is my distributed version of mean-std
 """
 
 from mpi4py import MPI
