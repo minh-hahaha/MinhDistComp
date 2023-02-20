@@ -31,17 +31,17 @@ recvbuff = comm.gather(rank_mean,root)
 
 if rank == root:
     recvbuff = np.stack(recvbuff)
-    pop_mean = st.getMean(recvbuff) 
-    print("pop_mean", " : " ,pop_mean) 
+    global_mean = st.getMean(recvbuff) 
+    print("global_mean", " : " ,global_mean) 
 else:
-    pop_mean = None
+    global_mean = None
 
 
 # broadcast result to all ranks
-mean = comm.bcast(pop_mean,root)
+mean = comm.bcast(global_mean,root)
 
 # each rank gets a sums of squares on its portion of the data
-rank_sos = st.sumsquares(data,pop_mean)
+rank_sos = st.sumsquares(data[rank],mean)
     
 # return sums of squares to the root (reduce) and get the sum of the sums of squares 
 res = MPI.COMM_WORLD.reduce(rank_sos,root = root)
@@ -49,7 +49,7 @@ res = MPI.COMM_WORLD.reduce(rank_sos,root = root)
 if rank == root:
     #print("sum of sum of squares : " , res)
     std = st.stdev(res, (len(data) * len(data[0])))
-    print("std", std)
+    print("std : ", std)
 # root can calculate the std
 
 
