@@ -3,9 +3,16 @@
 This script will use Monte Carlo method to estimate Pi
 """
 import random
+from mpi4py import MPI
 import numpy as np
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
+name = MPI.Get_processor_name()
 
-pairs = 10**5 
+root = 0
+
+pairs = 10**7 
 x = []
 y = []
 count = 0
@@ -21,11 +28,16 @@ for i in range(0,pairs):
     if( (x[i]**2 + y[i]**2)**(1/2) <= 1 ):
         count = count + 1
     
-pi = 4 * count/(pairs)
+# pi = 4* count/(pairs)
 
-print (pi)
-print("percent error : ", (np.pi - pi)/np.pi , "%")
+pi = comm.reduce(count,root = root)
 
+if rank == root:
+    estpi = (pi/pairs) * 4
+    print(estpi)
+    print("percent error : ", (np.pi - pi)/np.pi , "%")
+    
+print (estpi)
 
 
 
